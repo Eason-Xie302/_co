@@ -28,4 +28,18 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+    PARTS:
+    // 根據 address[13..14] 將 load 訊號分流 (00=RAM, 01=RAM, 10=Screen, 11=Keyboard)
+    DMux4Way(in=load, sel=address[13..14], a=loadRAM1, b=loadRAM2, c=loadScreen, d=loadKbd);
+    
+    // RAM 佔了兩個區塊 (00 跟 01)，所以只要其中一個被選到就要 load RAM
+    Or(a=loadRAM1, b=loadRAM2, out=loadRAM);
+    
+    // 實際的三個硬體元件
+    RAM16K(in=in, load=loadRAM, address=address[0..13], out=ramOut);
+    Screen(in=in, load=loadScreen, address=address[0..12], out=screenOut);
+    Keyboard(out=kbdOut);
+    
+    // 最後把這三個元件的輸出，根據位址選一個送出去
+    Mux4Way16(a=ramOut, b=ramOut, c=screenOut, d=kbdOut, sel=address[13..14], out=out);
 }
