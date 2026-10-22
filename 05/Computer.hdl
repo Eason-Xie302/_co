@@ -20,14 +20,13 @@ CHIP Computer {
 
     PARTS:
     // Put your code here:
-    PARTS:
-    // ROM (讀取指令)：位址來自 CPU 的 pc，輸出 instruction 給 CPU
+
     ROM32K(address=pc, out=instruction);
     
-    // CPU：接收指令和記憶體資料，輸出運算結果和下一個 pc
+
     CPU(inM=memOut, instruction=instruction, reset=reset, 
         outM=outM, writeM=writeM, addressM=addressM, pc=pc);
         
-    // Memory (存取資料)：接收 CPU 的位址和寫入資料，輸出 memOut 回傳給 CPU
+
     Memory(in=outM, load=writeM, address=addressM, out=memOut);
 }
