@@ -10,11 +10,12 @@
  *                {0, 0, in, 0} if sel == 10
  *                {0, 0, 0, in} if sel == 11
  */
-
+ 
 CHIP DMux4Way {
     IN in, sel[2];
     OUT a, b, c, d;
-
     PARTS:
-    // Put your code here:
+    DMux(in=in, sel=sel[1], a=dmuxAB, b=dmuxCD);
+    DMux(in=dmuxAB, sel=sel[0], a=a, b=b);
+    DMux(in=dmuxCD, sel=sel[0], a=c, b=d);
 }
